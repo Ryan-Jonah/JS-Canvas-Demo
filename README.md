@@ -1,2 +1,4 @@
 # JS-Canvas-Demo
- Playing around with HTML/JS canvas API
+### Created for education purposes
+
+![Animation](img/Animation.gif "Animation")
