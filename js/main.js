@@ -28,8 +28,8 @@ const myGameArea = {
     canvas : document.createElement("canvas"),
 
     start : function() {
-      this.canvas.width = 1520;
-      this.canvas.height = 700;
+      this.canvas.width = window.innerWidth;
+      this.canvas.height = window.innerHeight;
       this.canvas.id = "gameCanvas";
       this.context = this.canvas.getContext("2d");
       document.body.insertBefore(this.canvas, document.body.childNodes[0]);
@@ -39,6 +39,16 @@ const myGameArea = {
     clear : function() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
       }
+}
+
+function updateGameArea() {
+    myGameArea.clear();
+    myGameArea.canvas.width = window.innerWidth;
+    myGameArea.canvas.height = window.innerHeight;
+
+    for (let gamePiece = 0; gamePiece < gamePieces.length; gamePiece++) {
+        gamePieces[gamePiece].update();
+    }
 }
 
 function startGame() {
@@ -62,6 +72,8 @@ class square {
             updateMovement(this);
             let gameContext = myGameArea.context;
             gameContext.fillStyle = color;
+            gameContext.shadowColor = '#DDD';
+            gameContext.shadowBlur = 6;
             gameContext.fillRect(this.x, this.y, this.width, this.height);
         };
     }
@@ -89,8 +101,10 @@ function generatePieces(count, width, height) {
 
     //Create number of square objects and adds them to gamePieces array
     for (let squareCount = 0; squareCount < count; squareCount++) {
-        let randIndex = Math.floor(Math.random() * 7);
+        
+        let randIndex = getRndInteger(0, 7);
         let color = bsColors[randIndex];
+
         gamePieces.push(
             new square(
                 width, 
@@ -98,18 +112,10 @@ function generatePieces(count, width, height) {
                 color, 
                 getRndInteger(1, myGameArea.canvas.width/2),  //xPos
                 getRndInteger(1, myGameArea.canvas.height/2), //yPos
-                getRndInteger(speedLow, speedHigh),             //xSpd
-                getRndInteger(speedLow, speedHigh)              //ySpd
+                getRndInteger(speedLow, speedHigh),           //xSpd
+                getRndInteger(speedLow, speedHigh)            //ySpd
             )
         );   
-    }
-}
-
-function updateGameArea() {
-    myGameArea.clear();
-
-    for (let gamePiece = 0; gamePiece < gamePieces.length; gamePiece++) {
-        gamePieces[gamePiece].update();
     }
 }
 
